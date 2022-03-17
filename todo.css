@@ -71,10 +71,10 @@ ul {
     color: white;
     font-size: 1.25rem;
     font-weight: 700;
-    /* background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
+    background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
     background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
+    -webkit-text-fill-color: transparent;
     opacity: 0.6;
     transition: 0.4s;
 }
@@ -168,11 +168,10 @@ button {
 }
 
 .edit-button {
-    color: white;
-    /* background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
+    background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
     background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
+    -webkit-text-fill-color: transparent;
 }
 
 .delete-button {
@@ -185,135 +184,3 @@ button {
   }
 
 
-/*
-
-header {
-    padding: 2rem 1rem;
-    max-width: 800px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.todo-form {
-    display: flex;
-}
-
-.todo-input {
-    flex: 1 1 0%;
-    background-color: var(--Grayish-Blue);
-    color: white;
-    padding: 1rem;
-    border-radius: 1rem;
-    margin-right: 1rem;
-    font-size:1.125rem;
-}
-
-.add-button {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 700;
-    background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 0.6;
-    pointer-events: none;
-    transition: 0.4s;
-}
-
-.add-button.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.add-button:hover {
-    opacity: 0.8;
-}
-
-.add-button:active {
-    opacity: 1;
-    cursor: pointer;
-}
-
-main {
-    flex: 1 1 0%;
-    padding: 2rem 1rem;
-    max-width: 800px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-#tasks {
-    padding: 1rem;
-}
-
-#tasks h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-#tasks .task {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--Grayish-Blue);
-    padding: 1rem;
-    border-radius: 1rem;
-    margin-bottom: 1rem;
-}
-
-#tasks .task .content {
-    flex: 1 1 0%;
-}
-
-#tasks .task .content .text {
-    color: white;
-    font-size: 1.125rem;
-    width:100%;
-    display: block;
-    transition: 0.4s;
-    height: 100%;
-}
-
-#tasks .task .content .text:not(:read-only) {
-    color: white;
-}
-
-#tasks .task .actions {
-    display: flex;
-    margin: 0 -0.5rem;
-}
-
-.task .actions button {
-    cursor: pointer;
-    margin: 0 0.5rem;
-    font-size: 1.125rem;
-    text-transform: uppercase;
-    transition: 0.4s;
-}
-
-.task .actions button:hover {
-    opacity: 0.8;
-}
-
-.task .actions button:active {
-    opacity: 0.6;
-}
-
-.task .actions .edit-button {
-    background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.task .actions .delete-button {
-    color: crimson
-}
-/*
