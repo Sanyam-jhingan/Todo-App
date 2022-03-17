@@ -1,211 +1,140 @@
-window.addEventListener("load", () => {
-  const form = document.querySelector("#new-task-form")
-  const input = document.querySelector("#new-task-input")
-  const addBtn = document.querySelector("#new-task-submit")
-  const tasks = document.querySelector("#tasks")
+const todoForm = document.querySelector(".todo-form")
+const todoInput = document.querySelector(".todo-input")
+const todoItemsList = document.querySelector(".todo-items")
+const input = document.querySelector(".text")
+const items = todoItemsList.getElementsByTagName("li")
 
-  input.onkeyup = () => {
-    let task = input.value
+let todos = []
 
-    if (task.trim() != 0) {
-      addBtn.classList.add("active")
-    } else {
-      addBtn.classList.remove("active")
+todoForm.addEventListener("submit", function (event) {
+  event.preventDefault()
+  addTodo(todoInput.value)
+})
+
+function addTodo(item) {
+  if (item !== "") {
+    const todo = {
+      id: Date.now(),
+      name: item,
+      completed: false,
     }
+    todos.push(todo)
+    addToLocalStorage(todos)
+    todoInput.value = ""
   }
+}
 
-  showTasks()
+getFromLocalStorage()
 
-  form.addEventListener("submit", e => {
-    e.preventDefault()
+function renderTodos(todos) {
+  todoItemsList.innerHTML = ""
+  todos.forEach(function (item) {
+    const checked = item.completed ? "checked" : null
+    const li = document.createElement("li")
+    li.setAttribute("class", "item")
+    li.setAttribute("data-key", item.id)
 
-    let task = input.value
+    const checkbox_input_el = document.createElement("input")
+    checkbox_input_el.classList.add("checkbox")
+    checkbox_input_el.type = "checkbox"
 
-    const task_el = document.createElement("div")
-    task_el.classList.add("task")
+    li.appendChild(checkbox_input_el)
 
-    const task_content_el = document.createElement("div")
-    task_content_el.classList.add("content")
+    const label_el = document.createElement("LABEL")
+    label_el.setAttribute("for", "customCheckboxInput")
 
-    task_el.appendChild(task_content_el)
+    li.appendChild(label_el)
 
     const task_input_el = document.createElement("input")
     task_input_el.classList.add("text")
     task_input_el.type = "text"
-    task_input_el.value = task
+    task_input_el.value = item.name
     task_input_el.setAttribute("readonly", "readonly")
 
-    task_content_el.appendChild(task_input_el)
-
-    const task_actions_el = document.createElement("div")
-    task_actions_el.classList.add("actions")
+    li.appendChild(task_input_el)
 
     const task_edit_el = document.createElement("button")
-    task_edit_el.classList.add("edit")
+    task_edit_el.classList.add("edit-button")
     task_edit_el.innerText = "Edit"
 
     const task_delete_el = document.createElement("button")
-    task_delete_el.classList.add("delete")
+    task_delete_el.classList.add("delete-button")
     task_delete_el.innerText = "Delete"
 
-    task_actions_el.appendChild(task_edit_el)
-    task_actions_el.appendChild(task_delete_el)
-
-    task_el.appendChild(task_actions_el)
-
-    tasks.appendChild(task_el)
-
-    let userEnteredValue = input.value //getting input field value
-    let getLocalStorageData = localStorage.getItem("New Todo") //getting localstorage
-    if (getLocalStorageData == null) {
-      //if localstorage has no data
-      listArray = [] //create a blank array
-    } else {
-      listArray = JSON.parse(getLocalStorageData) //transforming json string into a js object
+    li.appendChild(task_edit_el)
+    li.appendChild(task_delete_el)
+    if (item.completed === true) {
+      li.classList.add("checked")
+      checkbox_input_el.checked = true
     }
-    listArray.push(userEnteredValue) //pushing or adding new value in array
-    localStorage.setItem("New Todo", JSON.stringify(listArray))
-
-    input.value = ""
+    todoItemsList.append(li)
 
     task_edit_el.addEventListener("click", e => {
       if (task_edit_el.innerText.toLowerCase() == "edit") {
         task_edit_el.innerText = "Save"
         task_input_el.removeAttribute("readonly")
         task_input_el.focus()
-        let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-        //console.log(task_input_el.value)
-        //console.log(storedNames)
-
-        for (let index = 0; index < storedNames.length; index++) {
-          if (storedNames[index] === task_input_el.value) {
-            //console.log(index)
-            storedNames.splice(index, 1)
-            //console.log(storedNames)
-            localStorage.setItem("New Todo", JSON.stringify(storedNames))
+        for (let index = 0; index < todos.length; index++) {
+          if (todos[index]["name"] === task_input_el.value) {
+            console.log(todos[index]["name"])
+            delete todos[index]["name"]
             break
           }
         }
       } else {
         task_edit_el.innerText = "Edit"
         task_input_el.setAttribute("readonly", "readonly")
-        let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-        console.log(storedNames)
         userEnteredValue = task_input_el.value
-        storedNames.push(userEnteredValue) //pushing or adding new value in array
-        localStorage.setItem("New Todo", JSON.stringify(storedNames))
-      }
-    })
-
-    task_delete_el.addEventListener("click", e => {
-      tasks.removeChild(task_el)
-      let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-      //console.log(task_input_el.value)
-      //console.log(storedNames)
-
-      for (let index = 0; index < storedNames.length; index++) {
-        if (storedNames[index] === task_input_el.value) {
-          //console.log(index)
-          storedNames.splice(index, 1)
-          //console.log(storedNames)
-          localStorage.setItem("New Todo", JSON.stringify(storedNames))
-          break
+        for (let index = 0; index < todos.length; index++) {
+          if (
+            event.target.parentElement.getAttribute("data-key") ==
+            todos[index]["id"]
+          ) {
+            todos[index]["name"] = userEnteredValue 
+          }
         }
+        addToLocalStorage(todos)
       }
     })
   })
+}
 
-  function showTasks() {
-    let getLocalStorageData = localStorage.getItem("New Todo")
-    if (getLocalStorageData == null) {
-      listArray = []
-    } else {
-      listArray = JSON.parse(getLocalStorageData)
+function addToLocalStorage(todos) {
+  localStorage.setItem("todos", JSON.stringify(todos))
+  renderTodos(todos)
+}
+
+function getFromLocalStorage() {
+  const reference = localStorage.getItem("todos")
+  if (reference) {
+    todos = JSON.parse(reference)
+    renderTodos(todos)
+  }
+}
+
+function toggle(id) {
+  todos.forEach(function (item) {
+    if (item.id == id) {
+      item.completed = !item.completed
     }
-    listArray.forEach((element, index) => {
-      const task_el = document.createElement("div")
-      task_el.classList.add("task")
+  })
+  addToLocalStorage(todos)
+}
 
-      const task_content_el = document.createElement("div")
-      task_content_el.classList.add("content")
+function deleteTodo(id) {
+  todos = todos.filter(function (item) {
+    return item.id != id
+  }) 
+  addToLocalStorage(todos)
+}
 
-      task_el.appendChild(task_content_el)
 
-      const task_input_el = document.createElement("input")
-      task_input_el.classList.add("text")
-      task_input_el.type = "text"
-      task_input_el.value = element
-      task_input_el.setAttribute("readonly", "readonly")
 
-      task_content_el.appendChild(task_input_el)
-
-      const task_actions_el = document.createElement("div")
-      task_actions_el.classList.add("actions")
-
-      const task_edit_el = document.createElement("button")
-      task_edit_el.classList.add("edit")
-      task_edit_el.innerText = "Edit"
-
-      const task_delete_el = document.createElement("button")
-      task_delete_el.classList.add("delete")
-      task_delete_el.innerText = "Delete"
-
-      task_actions_el.appendChild(task_edit_el)
-      task_actions_el.appendChild(task_delete_el)
-
-      task_el.appendChild(task_actions_el)
-
-      tasks.appendChild(task_el)
-
-      task_edit_el.addEventListener("click", e => {
-        if (task_edit_el.innerText.toLowerCase() == "edit") {
-          task_edit_el.innerText = "Save"
-          task_input_el.removeAttribute("readonly")
-          task_input_el.focus()
-          let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-          //console.log(task_input_el.value)
-          //console.log(storedNames)
-
-          for (let index = 0; index < storedNames.length; index++) {
-            if (storedNames[index] === task_input_el.value) {
-              //console.log(index)
-              storedNames.splice(index, 1)
-              //console.log(storedNames)
-              localStorage.setItem("New Todo", JSON.stringify(storedNames))
-              break
-            }
-          }
-        } else {
-          task_edit_el.innerText = "Edit"
-          task_input_el.setAttribute("readonly", "readonly")
-          let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-          //console.log(task_input_el.value)
-          userEnteredValue = task_input_el.value
-          storedNames.push(userEnteredValue) //pushing or adding new value in array
-          localStorage.setItem("New Todo", JSON.stringify(storedNames))
-        }
-      })
-
-      task_delete_el.addEventListener("click", e => {
-        tasks.removeChild(task_el)
-        let storedNames = JSON.parse(localStorage.getItem("New Todo"))
-        //console.log(task_input_el.value)
-        //console.log(storedNames)
-
-        for (let index = 0; index < storedNames.length; index++) {
-          if (storedNames[index] === task_input_el.value) {
-            //console.log(index)
-            storedNames.splice(index, 1)
-            //console.log(storedNames)
-            localStorage.setItem("New Todo", JSON.stringify(storedNames))
-            break
-          }
-        }
-      })
-    })
-
-    // task_edit_el.innerHTML = newLiTag;
-
-    input.value = "" //once task added leave the input field blank
+todoItemsList.addEventListener("click", function (event) {
+  if (event.target.type === "checkbox") {
+    toggle(event.target.parentElement.getAttribute("data-key"))
+  } 
+  if (event.target.classList.contains("delete-button")) {
+    deleteTodo(event.target.parentElement.getAttribute("data-key"))
   }
 })
