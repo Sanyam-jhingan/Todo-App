@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 :root {
-    --primary-gradient-one: hsl(236, 72%, 79%);
-    --primary-gradient-two: hsl(237, 63%, 64%);
+    --primary-gradient-one: hsl(236, 83%, 89%);
+    --primary-gradient-two: hsl(237, 25%, 64%);
     --Very-Light-Grayish-Blue: hsl(240, 78%, 98%);
     --Light-Grayish-Blue: hsl(234, 14%, 74%);
     --Grayish-Blue: hsl(233, 13%, 49%);
