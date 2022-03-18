@@ -22,7 +22,6 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    width: 100vw;
     background-color: var(--Dark-Grayish-Blue);
     color: var(--Very-Light-Grayish-Blue)
 }
@@ -39,11 +38,13 @@ ul {
 }
 
 .todo-container {
-    min-width: 800px;
+    max-width: 800px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1rem;
+    border: 1px solid red;
   }
 
 .todo-container h1 {
@@ -75,10 +76,10 @@ ul {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    opacity: 0.6;
+    opacity: 1;
     transition: 0.4s;
 }
-
+/*
 .add-button.active {
     opacity: 1;
     pointer-events: auto;
@@ -92,6 +93,7 @@ ul {
     opacity: 1;
     cursor: pointer;
 }
+*/
 
 .todo-items {
     display: flex;
