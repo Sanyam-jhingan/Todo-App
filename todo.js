@@ -1,8 +1,6 @@
 const todoForm = document.querySelector(".todo-form")
 const todoInput = document.querySelector(".todo-input")
 const todoItemsList = document.querySelector(".todo-items")
-const input = document.querySelector(".text")
-const items = todoItemsList.getElementsByTagName("li")
 
 let todos = []
 
@@ -68,35 +66,34 @@ function renderTodos(todos) {
       checkbox_input_el.checked = true
     }
     todoItemsList.append(li)
-
-    task_edit_el.addEventListener("click", e => {
-      if (task_edit_el.innerText.toLowerCase() == "edit") {
-        task_edit_el.innerText = "Save"
-        task_input_el.removeAttribute("readonly")
-        task_input_el.focus()
-        for (let index = 0; index < todos.length; index++) {
-          if (todos[index]["name"] === task_input_el.value) {
-            console.log(todos[index]["name"])
-            delete todos[index]["name"]
-            break
-          }
-        }
-      } else {
-        task_edit_el.innerText = "Edit"
-        task_input_el.setAttribute("readonly", "readonly")
-        userEnteredValue = task_input_el.value
-        for (let index = 0; index < todos.length; index++) {
-          if (
-            event.target.parentElement.getAttribute("data-key") ==
-            todos[index]["id"]
-          ) {
-            todos[index]["name"] = userEnteredValue 
-          }
-        }
-        addToLocalStorage(todos)
-      }
-    })
   })
+}
+
+function editTodo(e) {
+  if (e.innerText.toLowerCase() == "edit") {
+    e.innerText = "Save"
+    e.previousSibling.removeAttribute("readonly")
+    e.previousSibling.focus()
+    for (let index = 0; index < todos.length; index++) {
+      if (todos[index]["name"] === e.previousSibling.value) {
+        console.log(todos[index]["name"])
+        delete todos[index]["name"]
+        break
+      }
+    }
+  } else {
+    e.innerText = "Edit"
+    e.previousSibling.setAttribute("readonly", "readonly")
+    userEnteredValue = e.previousSibling.value
+    for (let index = 0; index < todos.length; index++) {
+      if (
+        e.parentElement.getAttribute("data-key") == todos[index]["id"]
+      ) {
+        todos[index]["name"] = userEnteredValue
+      }
+    }
+    addToLocalStorage(todos)
+   }
 }
 
 function addToLocalStorage(todos) {
@@ -124,17 +121,18 @@ function toggle(id) {
 function deleteTodo(id) {
   todos = todos.filter(function (item) {
     return item.id != id
-  }) 
+  })
   addToLocalStorage(todos)
 }
-
-
 
 todoItemsList.addEventListener("click", function (event) {
   if (event.target.type === "checkbox") {
     toggle(event.target.parentElement.getAttribute("data-key"))
-  } 
+  }
   if (event.target.classList.contains("delete-button")) {
     deleteTodo(event.target.parentElement.getAttribute("data-key"))
+  }
+  if (event.target.matches(".edit-button")) {
+    editTodo(event.target)
   }
 })
