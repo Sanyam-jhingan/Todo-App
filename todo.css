@@ -71,10 +71,6 @@ ul {
     color: white;
     font-size: 1.25rem;
     font-weight: 700;
-    /* background-image: linear-gradient(to right, var(--primary-gradient-one), var(--primary-gradient-two));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
     opacity: 1;
     transition: 0.4s;
 }
